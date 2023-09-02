@@ -42,11 +42,36 @@ Item* obterItem(Item** inicio, int pos) {
     return item;
 }
 
-void exibirLista(Item* inicio) {
-    Item* item = inicio;
+void exibirLista(Item** inicio) {
+    Item* item = *inicio;
     while (item != NULL) {
         printf("%d \n", item->valor);
         item = item->proximo;
+    }
+}
+
+void removerItem(Item** inicio, int pos) {
+    Item* atual = *inicio;
+
+    if (pos == 0) {
+        *inicio = atual->proximo;
+        free(atual);
+        return;
+    }
+
+    int i = 0;
+
+    while (atual->proximo != NULL && i < pos - 1) {
+        atual = atual->proximo;
+        i++;
+    }
+
+    if (atual != NULL) {
+        Item* itemRemover = atual->proximo;
+        Item* novoProximo = itemRemover->proximo;
+
+        atual->proximo = novoProximo;
+        free(itemRemover);
     }
 }
 
@@ -58,10 +83,16 @@ int main() {
     adicionarItem(&inicio, 10);
     adicionarItem(&inicio, 12);
 
-    exibirLista(inicio);
+    exibirLista(&inicio);
 
     Item* item = obterItem(&inicio, 2);
     printf("A posicao 2 da lista tem o valor: %d", item->valor);
+
+    removerItem(&inicio, 0);
+    printf("Removendo item da posição 0\n");
+    printf("Lista após remoção: \n");
+
+    exibirLista(&inicio);
 
     return 0;
 }
