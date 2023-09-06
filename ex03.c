@@ -57,6 +57,11 @@ void removerItem(int pos) {
 
     if (pos == 0) {
         inicio = atual->proximo;
+
+        if (inicio == NULL) {
+            final = NULL;
+        }
+
         free(atual);
         tamanho --;
         return;
@@ -69,12 +74,17 @@ void removerItem(int pos) {
         Item* novoProximo = itemRemover->proximo;
 
         atual->proximo = novoProximo;
+        if (atual->proximo == NULL) { //indica que atual passou a ser o último da lista
+            final = atual;
+        }
+
         free(itemRemover);
         tamanho --;
     }
 }
 
 int main() {
+
     adicionarItem(5);
     adicionarItem(3);
     adicionarItem(7);
