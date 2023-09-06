@@ -6,9 +6,13 @@ typedef struct Item {
     struct Item* proximo;
 } Item;
 
-Item* inicio = NULL;
-Item* final = NULL;
-int tamanho = 0;
+typedef struct List {
+    Item *inicio;
+    Item *final;
+    int tamanho;
+} List;
+
+List lista = {NULL, NULL, 0};
 
 Item* criarItem(int valor) {
     Item* novoItem = malloc(sizeof(Item));
@@ -21,19 +25,19 @@ Item* criarItem(int valor) {
 void adicionarItem(int valor) {
     Item* novoItem = criarItem(valor);
 
-    if (inicio == NULL) {
-        inicio = novoItem;
-        final = novoItem;
+    if (lista.inicio == NULL) {
+        lista.inicio = novoItem;
+        lista.final = novoItem;
     } else {
-        final->proximo = novoItem;
-        final = novoItem;
+        lista.final->proximo = novoItem;
+        lista.final = novoItem;
     }
 
-    tamanho ++;
+    lista.tamanho ++;
 }
 
 Item* obterItem(int pos) {
-    Item* item = inicio;
+    Item* item = lista.inicio;
     int i = 0;
 
     while (i < pos && item != NULL) {
@@ -45,7 +49,7 @@ Item* obterItem(int pos) {
 }
 
 void exibirLista() {
-    Item* item = inicio;
+    Item* item = lista.inicio;
     while (item != NULL) {
         printf("%d \n", item->valor);
         item = item->proximo;
@@ -53,17 +57,17 @@ void exibirLista() {
 }
 
 void removerItem(int pos) {
-    Item* atual = inicio;
+    Item* atual = lista.inicio;
 
     if (pos == 0) {
-        inicio = atual->proximo;
+        lista.inicio = atual->proximo;
 
-        if (inicio == NULL) {
-            final = NULL;
+        if (lista.inicio == NULL) {
+            lista.final = NULL;
         }
 
         free(atual);
-        tamanho --;
+        lista.tamanho --;
         return;
     }
 
@@ -75,11 +79,11 @@ void removerItem(int pos) {
 
         atual->proximo = novoProximo;
         if (atual->proximo == NULL) { //indica que atual passou a ser o último da lista
-            final = atual;
+            lista.final = atual;
         }
 
         free(itemRemover);
-        tamanho --;
+        lista.tamanho --;
     }
 }
 
@@ -91,7 +95,7 @@ int main() {
     adicionarItem(10);
     adicionarItem(12);
 
-    printf("Tamanho da lista: %d \n", tamanho);
+    printf("Tamanho da lista: %d \n", lista.tamanho);
 
     exibirLista();
 
@@ -102,7 +106,7 @@ int main() {
 
     removerItem(0);
 
-    printf("Tamanho da lista: %d \n", tamanho);
+    printf("Tamanho da lista: %d \n", lista.tamanho);
     printf("Lista após remoção: \n");
 
     exibirLista();
