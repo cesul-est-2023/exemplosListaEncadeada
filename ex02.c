@@ -82,7 +82,9 @@ void removerItem(Item** inicio, int pos) {
         Item* novoProximo = itemRemover->proximo;
 
         atual->proximo = novoProximo;
-        novoProximo->anterior = atual;
+        if (novoProximo != NULL) {
+            novoProximo->anterior = atual;
+        }
 
         free(itemRemover);
     }
@@ -101,8 +103,8 @@ int main() {
     Item* item = obterItem(&inicio, 2);
     printf("A posicao 2 da lista tem o valor: %d\n", item->valor);
 
-    removerItem(&inicio, 0);
-    printf("Removendo item da posição 0\n");
+    removerItem(&inicio, 4);
+    printf("Removendo item da posição 4\n");
     printf("Lista após remoção: \n");
 
     exibirLista(&inicio);
